@@ -18,15 +18,28 @@ module.exports = {
   "features": {
     "storyStoreV7": true
   },
-  async viteFinal(config) {
-    // Merge custom configuration into the default config
+  async viteFinal(config, { configType }) {
+    // return the customized config
     return mergeConfig(config, {
-      // Use the same "resolve" configuration as your app
-      resolve: (await import('../vite.config.js')).default.resolve,
-      // Add dependencies to pre-optimization
-      optimizeDeps: {
-        include: ['storybook-dark-mode'],
+      // customize the Vite config here
+      build: {
+        rollupOptions: {
+          output: {
+            sanitizeFileName(name) {
+              const INVALID_CHAR_REGEX = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g;
+              const DRIVE_LETTER_REGEX = /^[a-z]:/i;
+              
+              const match = DRIVE_LETTER_REGEX.exec(name);
+              const driveLetter = match ? match[0] : '';
+              return (
+                driveLetter +
+                name.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
+              );
+            },
+          },
+        },
       },
     });
   },
+
 }
