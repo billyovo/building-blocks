@@ -6,7 +6,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -o build -s ./src/assets"
+    "build-storybook": "build-storybook -o build"
   },
   "dependencies": {
     "vue": "^3.2.41"
