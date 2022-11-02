@@ -20,8 +20,12 @@ module.exports = {
   },
   async viteFinal(config, { configType }) {
     // return the customized config
+    if (configType === 'PRODUCTION') {
+      config.base = './';
+    }
     return mergeConfig(config, {
       // customize the Vite config here
+      
       build: {
         rollupOptions: {
           output: {
